@@ -1,0 +1,26 @@
+@import "./variables/variables";
+@import "./init/globale";
+
+@import "./components/table";
+@import "./components/sidebar";
+
+// Pharma Style custome
+@import "../fonts/style.css";
+*{
+    font-family: $f_regular;
+}
+.f_bold {
+    font-family: $f_bold;
+}
+.f_light {
+    font-family: $f_light;
+}
+.f_regular {
+    font-family: $f_regular;
+}
+.f_extraBold {
+    font-family: $f_extraBold;
+}
+label {
+    white-space: nowrap;
+}

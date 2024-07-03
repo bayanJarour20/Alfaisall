@@ -1,0 +1,171 @@
+<template>
+  <div>
+    <h1>id: {{ id }} ___ lang: {{ lang }}</h1>
+    <b-button-group class="mb-1">
+      <b-button
+        :variant="!+lang ? 'primary' : 'outline-primary'"
+        :to="'/main/services/details/' + id + '/0'"
+        >عربي</b-button
+      >
+      <b-button
+        :to="'/main/services/details/' + id + '/1'"
+        :variant="!+lang ? 'outline-primary' : 'primary'"
+        >English</b-button
+      >
+    </b-button-group>
+     <ValidationObserver ref="observer">
+    <b-form
+      slot-scope="{
+        validate
+      }" 
+      @submit.prevent="validate().then(onSubmit);"
+      @reset="resetForm"
+    >
+    <b-card no-body class="mb-2">
+      <b-card-header class="align-items-center">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 1.5H6.00001C5.40327 1.5 4.83097 1.73705 4.40902 2.15901C3.98706 2.58097 3.75001 3.15326 3.75001 3.75V15.75C3.74948 15.8822 3.78389 16.0121 3.84974 16.1267C3.91559 16.2413 4.01055 16.3364 4.12501 16.4025C4.23902 16.4683 4.36835 16.503 4.50001 16.503C4.63166 16.503 4.76099 16.4683 4.87501 16.4025L9.00001 14.0175L13.125 16.4025C13.2393 16.4673 13.3686 16.5009 13.5 16.5C13.6314 16.5009 13.7607 16.4673 13.875 16.4025C13.9895 16.3364 14.0844 16.2413 14.1503 16.1267C14.2161 16.0121 14.2505 15.8822 14.25 15.75V3.75C14.25 3.15326 14.013 2.58097 13.591 2.15901C13.169 1.73705 12.5967 1.5 12 1.5ZM12.75 14.4525L9.37501 12.5025C9.26099 12.4367 9.13166 12.402 9.00001 12.402C8.86835 12.402 8.73902 12.4367 8.62501 12.5025L5.25001 14.4525V3.75C5.25001 3.55109 5.32902 3.36032 5.46968 3.21967C5.61033 3.07902 5.80109 3 6.00001 3H12C12.1989 3 12.3897 3.07902 12.5303 3.21967C12.671 3.36032 12.75 3.55109 12.75 3.75V14.4525Z"
+            fill="#5E5873"
+          />
+        </svg>
+        <h4 class="mr-auto mb-0">تفاصيل المنتج</h4>
+      </b-card-header>
+      <b-card-body>
+        <b-card-text>
+          <b-row>
+            <b-col>
+              <BTextInputWithValidation
+                rules="required"
+                name="اسم المستخدم"
+                label="سم الخدمة"
+                placeholder="دخل اسم الخدمة"
+              />
+            </b-col>
+            <b-col>
+              <BTextInputWithValidation
+                rules="required"
+                name="رقم المستخدم"
+                label="رقم الخدمة"
+                placeholder="دخل رقم الخدمة"
+              />
+              <label class="mt-1">صورة </label>
+              <fileDragDrop
+                @inValidFile="unValidThumbImage"
+                @uploaded="uploadThumbImage"
+                id="employee-photo"
+                height="100px"
+                type="image"
+                title="صورة جديدة"
+              />
+              <img
+                v-if="!!photo64"
+                :src="photo64"
+                style="max-height: 320px; object-fit: fill;"
+                class="w-100"
+              />
+            </b-col>
+          </b-row>
+        </b-card-text>
+      </b-card-body>
+      <b-card-footer>
+        <b-row>
+          <b-col>
+            <div class="d-flex">
+              <b-button class="mr-1"  type="submit"  variant="primary" style="max-width:100px" 
+                >تعديل</b-button
+              >
+              <b-button  variant="outline-primary" style="max-width:100px" 
+                >تراجع</b-button
+              >
+            </div>
+          </b-col>
+          <b-col style="    display: flex;
+    justify-content: flex-end;">
+            <b-button href="#" style="max-width:100px" variant="outline-primary"
+              >حذف</b-button
+            >
+          </b-col>
+        </b-row>
+      </b-card-footer>
+    </b-card>
+    </b-form>
+  </ValidationObserver>
+      
+    
+  </div>
+</template>
+<script>
+import BTextInputWithValidation from "@core/components/inputs/BTextInputWithValidation";
+import { ValidationObserver } from "vee-validate";
+import {
+  BButtonGroup,
+  BButton,
+  BCard,
+  BRow,
+  BCol,
+  BCardText,
+  BCardHeader,
+  BCardBody,
+  BCardFooter,
+  BForm
+} from "bootstrap-vue";
+import fileDragDrop from "@core/components/file-drag-drop/file-drag-drop.vue";
+export default {
+  props: {
+    lang: String,
+    id: String,
+  },
+  components: {
+    BButtonGroup,
+    BButton,
+    BCard,
+    BCol,
+    BRow,
+    BForm,
+    fileDragDrop,
+    BCardText,
+    BCardHeader,
+    BCardBody,
+    BCardFooter,
+    BTextInputWithValidation,
+    ValidationObserver
+  },
+  data: () => ({
+    text: "",
+    photo64: "",
+  }),
+  methods: {
+    onSubmit() {
+      console.log("Form submitted yay!");
+    },
+    resetForm() {
+      this.email = "";
+      this.password = "";
+      this.confirmation = "";
+      this.subject = "";
+      this.choices = [];
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset();
+      });
+    },
+    uploadThumbImage(file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (() => {
+        this.photo64 = reader.result;
+        console.log(this.photo64);
+      }).bind(this);
+    },
+    unValidThumbImage() {
+      console.log("un valid Thumb file");
+    },
+  },
+};
+</script>
